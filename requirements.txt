@@ -1,0 +1,14 @@
+Django==3.2
+Pillow==9.1.1
+
+asgiref==3.5.2
+sqlparse==0.4.2
+django-admin-interface
+
+django-smart-selects==1.5.9
+
+djangorestframework==3.13.1
+# django-rest-swagger
+# django-cors-headers
+# secure-smtplib
+
