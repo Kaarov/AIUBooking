@@ -31,7 +31,7 @@
     padding: 25px 30px 10px;
     justify-content: space-between;
 }
-#current-date-month, #current-date-year {
+#current-date-month, #current-date-year{
     visibility : hidden;
 }
 header .icons{
@@ -127,6 +127,7 @@ header .current-date{
     text-align: center;
 }
 .booking-times .booking-schedule{
+    padding: 15px;
     margin-bottom: 20px;
 }
 
@@ -150,8 +151,9 @@ header .current-date{
     align-items: center;
 }
 .booking-row > a{
+    margin-left: 20px;
     border-radius: 20px;
-    width: 18vh;
+    width: 20vh;
 }
 .booking-row > span {
     background-color: #9796f0;
