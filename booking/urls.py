@@ -5,7 +5,7 @@ from booking.views import *
 urlpatterns = [
 
     # Ajax API
-    path('', AjaxHandler.as_view()),
+    path('', AjaxHandler.as_view(), name="home"),
 
     # Booking API
     path('bookingitem/', BookingItemViewSet.as_view({'get': 'list', 'post': 'create'})),
@@ -17,4 +17,6 @@ urlpatterns = [
                                                               'put': 'update', 'delete': 'destroy'})),
 
     path('bookingpoleput/<int:year>/<int:month>/<int:day>/', BookingPolePutViewSet.as_view({'get': 'list'})),
+
+    path('bookingpost/', bookingpost),
 ]

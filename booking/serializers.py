@@ -25,6 +25,7 @@ class BookingPolePutViewSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookingItem
         fields = '__all__'
+        # fields = ['__all__', 'products']
 
     def get_products(self, obj):
         products = BookingItem.objects.filter(booking_day=obj)

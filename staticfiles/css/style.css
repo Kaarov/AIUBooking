@@ -11,16 +11,16 @@
     justify-content: center;
 }
 .grid-calendar {
-    height: 600px;
     display: grid;
     grid-template-columns: 1fr;
-    margin: 20px 0px;
+    margin: 20px 0;
     padding: 20px 10px;
     min-height: 50vh;
     background:linear-gradient(to right, #9796f0, #fbc7d4);
 }
 .wrapper{
-    width: 450px;
+    height: 50vh;
+    width: 55vh;
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.12);
@@ -30,6 +30,9 @@
     align-items: center;
     padding: 25px 30px 10px;
     justify-content: space-between;
+}
+#current-date-month, #current-date-year {
+    visibility : hidden;
 }
 header .icons{
     display: flex;
@@ -141,7 +144,7 @@ header .current-date{
 .booking-row {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 100px 100px 200px;
+    grid-template-columns: 1fr 1fr 2fr;
     grid-gap: 3px;
     justify-items: center;
     align-items: center;

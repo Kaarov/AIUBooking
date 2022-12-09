@@ -1,6 +1,11 @@
 from django.contrib import admin
 
-from booking.models import BookingPole, BookingItem, BookingTime
+from booking.models import BookingPole, BookingItem, BookingTime, Personal
+
+
+@admin.register(Personal)
+class PersonalAdmin(admin.ModelAdmin):
+    list_display = ['name', ]
 
 
 @admin.register(BookingItem)

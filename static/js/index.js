@@ -1,6 +1,8 @@
 const daysTag = document.querySelector(".days"),
     booking_scheduleTag = document.querySelector(".booking-schedule"),
     currentDate = document.querySelector(".current-date"),
+    userName = document.getElementById("userName").firstChild.nodeValue,
+    userNameID = document.getElementById("userNameId").firstChild.nodeValue,
     prevNextIcon = document.querySelectorAll(".icons span");
 
 const day_of_month = document.getElementById("message");
@@ -14,7 +16,7 @@ let date = new Date(),
 const months = ["January", "February", "March", "April", "May", "June", "July",
     "August", "September", "October", "November", "December"];
 
-const renderCalendar = () => {
+const renderCalendar = async () => {
     let firstDayofMonth = new Date(currYear, currMonth, 1).getDay(), // getting first day of month
         lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(), // getting last date of month
         lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay(), // getting last day of month
@@ -38,6 +40,173 @@ const renderCalendar = () => {
     day_of_month.innerHTML = `${date.getDate()}  ${months[currMonth]}`;
     currentDate.innerText = `${months[currMonth]} ${currYear}`; // passing current mon and yr as currentDate text
     daysTag.innerHTML = liTag;
+
+
+    // a TAG
+    let clickedmonth = currMonth;
+    let clickedyear = currYear;
+    let clickedday = date.getDate();
+
+    let bookingpoleapi, ans, bookingput;
+
+    let response = await fetch('bookingitem/', {
+        method: 'get',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.json())
+        .then(data => ans = data)
+
+    let responsepole = await fetch('bookingpole/', {
+        method: 'get',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json'
+        }
+    }).then(responsepole => responsepole.json())
+        .then(data => bookingpoleapi = data)
+
+
+    let bookingpoleput = await fetch(`bookingpoleput/${clickedyear}/${clickedmonth}/${clickedday}/`, {
+        method: 'get',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/json'
+        }
+    }).then(responsepole => responsepole.json())
+        .then(data => bookingput = data)
+
+
+    day_of_month.innerHTML = `${clickedday}  ${months[currMonth]}`;
+
+    let list_booking_time = [];
+    let list_booking_time_user = [];
+
+    for (let i = 0; i < bookingput.length; i++) {
+        if (parseInt(bookingput[i].name) === parseInt(userNameID)) {
+            list_booking_time_user.push(parseInt(bookingput[i].booking_time));
+        } else {
+            list_booking_time.push(bookingput[i].booking_time);
+        }
+    }
+    // list_booking_time_user = list_booking_time_user.map(function(str) {
+    //  return parseInt(str);
+    // });
+
+    list_booking_time.sort();
+    list_booking_time_user.sort((a, b)=>{ a - b});
+
+
+    let aliTag = "";
+    for (let i = 0; i < 18; i++) {
+        if (list_booking_time_user) {
+            if (list_booking_time_user[0] - 1 === i) {
+                aliTag += `<li class="booking-row"><span>${i + 6} : 00</span><span>${i + 7} : 00</span><a class="booked-own" id="${i + 1}">booked-own</a></li>`;
+                list_booking_time_user.shift();
+                continue;
+            }
+        }
+        if (list_booking_time) {
+            if (list_booking_time[0] - 1 === i) {
+                aliTag += `<li class="booking-row"><span>${i + 6} : 00</span><span>${i + 7} : 00</span><a class="booked" id="${i + 1}">booked</a></li>`;
+                list_booking_time.shift();
+                continue;
+            }
+        }
+        if (!getTimeBooking(i, bookingpoleapi[0])) {
+            aliTag += `<li class="booking-row"><span>${i + 6} : 00</span><span>${i + 7} : 00</span><a class="disable" id="${i + 1}">disable</a></li>`;
+        } else {
+            aliTag += `<li class="booking-row"><span>${i + 6} : 00</span><span>${i + 7} : 00</span><a class="able" id="${i + 1}">able</a></li>`;
+        }
+    }
+    booking_scheduleTag.innerHTML = aliTag;
+
+    const aTag = document.querySelectorAll(".booking-schedule li");
+
+    async function aclicked(a) {
+        let check = String(a.children[2].innerText);
+        if (check === "able") {
+
+            const aInfo = a.children[2]
+
+            let data = `${clickedyear} ${clickedmonth} ${clickedday} ${aInfo.id} ${userNameID}`;
+
+            await fetch(`bookingpost/`, {
+                method: 'POST',
+                body: data,
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            console.log("able");
+            // console.log(li);
+            // console.log(aInfo);
+            // console.log(userName, clickedyear, clickedmonth, clickedday, aInfo.id);
+
+            let bookingpoleapi, bookingput1;
+
+
+            await fetch('bookingpole/', {
+                method: 'get',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/json'
+                }
+            }).then(responsepole => responsepole.json())
+                .then(data => {
+                    bookingpoleapi = data
+                })
+
+
+            await fetch(`bookingpoleput/${clickedyear}/${clickedmonth}/${clickedday}/`, {
+                method: 'get',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/json'
+                }
+            }).then(responsepole => responsepole.json())
+                .then(data => {
+
+                    bookingput1 = data
+                })
+
+            const list_booking_time = [];
+            const list_booking_time_user = [];
+
+            for (let i = 0; i < bookingput1.length; i++) {
+                if (parseInt(bookingput1[i].name) === parseInt(userNameID)) {
+                    list_booking_time_user.push(bookingput1[i].booking_time);
+                } else {
+                    list_booking_time.push(bookingput1[i].booking_time);
+                }
+            }
+            //
+            list_booking_time.sort();
+            list_booking_time_user.sort();
+            //
+            let liTag = "";
+            // console.log(liTag);
+            // call(liTag, list_booking_time_user, list_booking_time, bookingpoleapi)
+            // $('#booking-schedule').click(function() {
+            //     location.reload();
+            // });
+
+            let filteredItem = bookingput1.find(item => item.booking_time == a.lastChild.id)
+            let newLiTag = `<span>${filteredItem.booking_time + 5} : 00</span><span>${filteredItem.booking_time + 6} : 00</span><a class="booked-own" id="${filteredItem.booking_time}">booked-own</a>`;
+            a.innerHTML = newLiTag
+        }
+    }
+
+
+    aTag.forEach(a => {
+        a.children[2].addEventListener("click", async () => {
+            aclicked(a);
+        })
+    })
 }
 renderCalendar();
 
@@ -101,7 +270,243 @@ function getTimeBooking(i, time) {
     }
 }
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrftoken = getCookie('csrftoken');
+
 const daysli = document.querySelectorAll(".days li");
+
+daysli.forEach(li => {
+    li.addEventListener("click", async () => {
+
+        let clickedmonth = li.parentElement.parentElement.parentElement.children[0].children[1].innerHTML;
+        let clickedyear = li.parentElement.parentElement.parentElement.children[0].children[2].innerHTML;
+        let clickedday = li.firstChild.nodeValue;
+
+        let bookingpoleapi, ans, bookingput;
+
+        let response = await fetch('bookingitem/', {
+            method: 'get',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            }
+        }).then(response => response.json())
+            .then(data => ans = data)
+
+        let responsepole = await fetch('bookingpole/', {
+            method: 'get',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            }
+        }).then(responsepole => responsepole.json())
+            .then(data => bookingpoleapi = data)
+
+
+        let bookingpoleput = await fetch(`bookingpoleput/${clickedyear}/${clickedmonth}/${clickedday}/`, {
+            method: 'get',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            }
+        }).then(responsepole => responsepole.json())
+            .then(data => bookingput = data)
+
+
+        day_of_month.innerHTML = `${clickedday}  ${months[currMonth]}`;
+
+        let list_booking_time = [];
+        let list_booking_time_user = [];
+
+        for (let i = 0; i < bookingput.length; i++) {
+            if (parseInt(bookingput[i].name) === parseInt(userNameID)) {
+                list_booking_time_user.push(parseInt(bookingput[i].booking_time));
+            } else {
+                list_booking_time.push(bookingput[i].booking_time);
+            }
+        }
+        // list_booking_time_user = list_booking_time_user.map(function(str) {
+        //  return parseInt(str);
+        // });
+
+        list_booking_time.sort();
+        list_booking_time_user.sort((a, b)=>{ a - b});
+
+
+        let liTag = "";
+        for (let i = 0; i < 18; i++) {
+            if (list_booking_time_user) {
+                if (list_booking_time_user[0] - 1 === i) {
+                    liTag += `<li class="booking-row"><span>${i + 6} : 00</span><span>${i + 7} : 00</span><a class="booked-own" id="${i + 1}">booked-own</a></li>`;
+                    list_booking_time_user.shift();
+                    continue;
+                }
+            }
+            if (list_booking_time) {
+                if (list_booking_time[0] - 1 === i) {
+                    liTag += `<li class="booking-row"><span>${i + 6} : 00</span><span>${i + 7} : 00</span><a class="booked" id="${i + 1}">booked</a></li>`;
+                    list_booking_time.shift();
+                    continue;
+                }
+            }
+            if (!getTimeBooking(i, bookingpoleapi[0])) {
+                liTag += `<li class="booking-row"><span>${i + 6} : 00</span><span>${i + 7} : 00</span><a class="disable" id="${i + 1}">disable</a></li>`;
+            } else {
+                liTag += `<li class="booking-row"><span>${i + 6} : 00</span><span>${i + 7} : 00</span><a class="able" id="${i + 1}">able</a></li>`;
+            }
+        }
+        booking_scheduleTag.innerHTML = liTag;
+
+        // aTagsFun(li, csrftoken, booking_scheduleTag);
+
+        const aTag = document.querySelectorAll(".booking-schedule li");
+
+        async function aclicked(a) {
+            let check = String(a.children[2].innerText);
+            if (check === "able") {
+
+                const aInfo = a.children[2]
+
+                let data = `${clickedyear} ${clickedmonth} ${clickedday} ${aInfo.id} ${userNameID}`;
+
+                await fetch(`bookingpost/`, {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
+
+                console.log("able");
+                // console.log(li);
+                // console.log(aInfo);
+                // console.log(userName, clickedyear, clickedmonth, clickedday, aInfo.id);
+
+                let bookingpoleapi, bookingput1;
+
+
+                await fetch('bookingpole/', {
+                    method: 'get',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/json'
+                    }
+                }).then(responsepole => responsepole.json())
+                    .then(data => {
+                        bookingpoleapi = data
+                    })
+
+
+                await fetch(`bookingpoleput/${clickedyear}/${clickedmonth}/${clickedday}/`, {
+                    method: 'get',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/json'
+                    }
+                }).then(responsepole => responsepole.json())
+                    .then(data => {
+
+                        bookingput1 = data
+                    })
+
+                const list_booking_time = [];
+                const list_booking_time_user = [];
+
+                for (let i = 0; i < bookingput1.length; i++) {
+                    if (parseInt(bookingput1[i].name) === parseInt(userNameID)) {
+                        list_booking_time_user.push(bookingput1[i].booking_time);
+                    } else {
+                        list_booking_time.push(bookingput1[i].booking_time);
+                    }
+                }
+                //
+                list_booking_time.sort();
+                list_booking_time_user.sort();
+                //
+                let liTag = "";
+                // console.log(liTag);
+                // call(liTag, list_booking_time_user, list_booking_time, bookingpoleapi)
+                // $('#booking-schedule').click(function() {
+                //     location.reload();
+                // });
+
+                let filteredItem = bookingput1.find(item => item.booking_time == a.lastChild.id)
+                let newLiTag = `<span>${filteredItem.booking_time + 5} : 00</span><span>${filteredItem.booking_time + 6} : 00</span><a class="booked-own" id="${filteredItem.booking_time}">booked-own</a>`;
+                a.innerHTML = newLiTag
+            }
+        }
+
+
+        aTag.forEach(a => {
+            a.children[2].addEventListener("click", async () => {
+                aclicked(a);
+            })
+        })
+
+    })
+})
+
+function call(liTag, list_booking_time_user, list_booking_time, bookingpoleapi) {
+    for (let i = 0; i < 18; i++) {
+        if (list_booking_time_user) {
+            if (list_booking_time_user[0] - 1 === i) {
+                liTag += `<li class="booking-row"><span>${i + 6} : 00</span><span>${i + 7} : 00</span><a class="booked-own" id="${i + 1}">booked-own</a></li>`;
+                list_booking_time_user.shift();
+                continue;
+            }
+        }
+        if (list_booking_time) {
+            if (list_booking_time[0] - 1 === i) {
+                liTag += `<li class="booking-row"><span>${i + 6} : 00</span><span>${i + 7} : 00</span><a class="booked" id="${i + 1}">booked</a></li>`;
+                list_booking_time.shift();
+                continue;
+            }
+        }
+        if (!getTimeBooking(i, bookingpoleapi[0])) {
+            liTag += `<li class="booking-row"><span>${i + 6} : 00</span><span>${i + 7} : 00</span><a class="disable" id="${i + 1}">disable</a></li>`;
+        } else {
+            liTag += `<li class="booking-row"><span>${i + 6} : 00</span><span>${i + 7} : 00</span><a class="able" id="${i + 1}">able</a></li>`;
+        }
+    }
+    booking_scheduleTag.innerHTML = liTag
+}
+
+// let xhr = new XMLHttpRequest();
+// xhr.open("POST", "bookingpost/");
+// xhr.setRequestHeader('X-CSRFToken', csrftoken);
+// xhr.setRequestHeader("Accept", "application/json");
+// xhr.setRequestHeader("Content-Type", "application/json");
+//
+// xhr.onreadystatechange = function () {
+//   if (xhr.readyState === 4) {
+//     console.log(xhr.status);
+//     console.log(xhr.responseText);
+//   }};
+//
+// xhr.send(`{
+//    "Id": 78912,
+//    "Customer": "Jason Sweet",
+//    "Quantity": 1,
+//    "Price": 18.00
+//   }`);
+
 
 // async function getBookingPoleAPI() {
 //
@@ -146,75 +551,19 @@ const daysli = document.querySelectorAll(".days li");
 //         console.log(getTimeBooking(i, bookingpoleapi[0]));
 //     }
 
-    // console.log(ans);
+// console.log(ans);
 
-    // const daysTag = document.querySelector(".days");
-    //
-    // let liTag = "";
+// const daysTag = document.querySelector(".days");
+//
+// let liTag = "";
 
-    // function lili(data) {
-    //     for (let i = 0; i < 2; i++) { // creating li of previous month last days
-    //         liTag += `<li>${data[i].id}</li>`;
-    //     }
-    // }
-
-    // lili(ans)
-    // daysTag.innerHTML = liTag;
+// function lili(data) {
+//     for (let i = 0; i < 2; i++) { // creating li of previous month last days
+//         liTag += `<li>${data[i].id}</li>`;
+//     }
 // }
 
-daysli.forEach(li => {
-    li.addEventListener("click", async () => {
-
-        let clickedmonth = li.parentElement.parentElement.parentElement.children[0].children[1].innerHTML;
-        let clickedyear = li.parentElement.parentElement.parentElement.children[0].children[2].innerHTML;
-        let clickedday = li.firstChild.nodeValue;
-
-        let bookingpoleapi, ans, bookingput;
-
-        let response = await fetch('bookingitem/', {
-            method: 'get',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Content-Type': 'application/json'
-            }
-        }).then(response => response.json())
-            .then(data => ans = data)
-
-        let responsepole = await fetch('bookingpole/', {
-            method: 'get',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Content-Type': 'application/json'
-            }
-        }).then(responsepole => responsepole.json())
-            .then(data => bookingpoleapi = data)
-
-        let bookingpoleput = await fetch(`bookingpoleput/${clickedyear}/${clickedmonth}/${clickedday}/`, {
-            method: 'get',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Content-Type': 'application/json'
-            }
-        }).then(responsepole => responsepole.json())
-            .then(data => bookingput = data)
-
-        for (let i=0; i < 18; i++) {
-            console.log(getTimeBooking(i, bookingpoleapi[0]));
-        }
-        console.log(bookingput);
-        // console.log(li.parentElement.parentElement.parentElement.children[0].children[2].innerHTML);
-        // console.log(li.parentElement.parentElement.parentElement.children[0].children[1].innerHTML);
-        day_of_month.innerHTML = `${clickedday}  ${months[currMonth]}`;
-
-        let liTag = "";
-        for (let i = 0; i < 17; i++) {
-            if (!getTimeBooking(i, bookingpoleapi[0])) {
-                liTag += `<li class="booking-row"><span>${i+6} : 00</span><span>${i+7} : 00</span><a class="disable">disable</a></li>`;
-            } else {
-                liTag += `<li class="booking-row"><span>${i+6} : 00</span><span>${i+7} : 00</span><a class="able">able</a></li>`;
-            }
-        }
-    booking_scheduleTag.innerHTML = liTag;
-    })
-})
+// lili(ans)
+// daysTag.innerHTML = liTag;
+// }
 

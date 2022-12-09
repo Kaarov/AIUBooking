@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-h8((c$%z4b(j&um_bgz&h+ve__*ym5vgslra7ovl*4mc+#hrxo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'admin_interface',
     'colorfield',
     'booking.apps.BookingConfig',
+    'user.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
@@ -138,18 +139,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# import mimetypes
-# mimetypes.add_type("text/css", ".css", True)
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# LOGOUT_REDIRECT_URL = 'login_own'
-#
-#
+LOGOUT_REDIRECT_URL = 'login_own'
+
+
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
     'DEFAULT_PERMISSION_CLASSES': [

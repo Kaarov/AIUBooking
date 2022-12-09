@@ -1,23 +1,71 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from rest_framework.permissions import BasePermission, AllowAny, SAFE_METHODS
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
 from booking.models import *
 from booking.serializers import *
 
+from django.views.decorators.csrf import csrf_protect
+
+
+@csrf_protect
+def bookingpost(request):
+    body = str(request.body)[2:-1].split()
+    print(body)
+    booking, is_booking_created = BookingItem.objects.get_or_create(name_id=int(body[4]),
+                                                                    booking_day=f"{body[0]}-{body[1]}-{body[2]}",
+                                                                    booking_item_id=1,
+                                                                    booking_time_id=body[3])
+    if is_booking_created:
+        booking.booking_day = f"{body[0]}-{body[1]}-{body[2]}"
+        booking.booking_item_id = 1
+        booking.booking_time_id = int(body[3])
+        print("Done")
+    else:
+        pass
+    booking.save()
+    return redirect('home')
+
 
 class AjaxHandler(View):
     def get(self, request):
-
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             time = BookingItem.objects.all()
             bookingpole = BookingPole.objects.all()
-            # time = '4'
             return JsonResponse({'time': time, 'bookingpole': bookingpole})
-        return render(request, 'index.html')
+        return render(request, 'calendar.html')
+
+
+class AddBooking(View):
+    def post(self, request, ):
+        if not request.user.is_authenticated:
+            return render(request, 'calendar.html')
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            time = BookingItem.objects.all()
+            bookingpole = BookingPole.objects.all()
+            return JsonResponse({'time': time, 'bookingpole': bookingpole})
+        return render(request, 'calendar.html')
+        # order, is_order_created = Order.objects.get_or_create(user=request.user, is_draft=True)
+        # order_item, is_orderitem_created = OrderItem.objects.get_or_create(product_id=product_id, order_id=order.id)
+        #
+        # if is_order_created or is_orderitem_created:
+        #     order_item.amount = 1
+        #     order_item.order = order
+        #     order_item.total_item_price = order_item.product.price
+        #     order.total_price = order.total_price + order_item.total_item_price
+        #     order.total = order.total + order_item.total_item_price + 5
+        # else:
+        #     order_item.amount += 1
+        #     order_item.order = order
+        #     order_item.total_item_price += order_item.product.price
+        #     order.total_price = order.total_price + order_item.product.price
+        #     order.total = order.total + order_item.product.price
+        # order_item.save()
+        # order.save()
+        # return render(request, 'calendar.html')
 
 
 # Rest Api
@@ -78,6 +126,8 @@ class BookingItemViewSet(ModelViewSet):
         else:
             return Response("error: Not found", status=200)
         return Response("success: Destroyed", status=200)
+
+
 # ---------
 
 

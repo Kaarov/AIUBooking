@@ -11,7 +11,6 @@
     justify-content: center;
 }
 .grid-calendar {
-    height: 600px;
     display: grid;
     grid-template-columns: 1fr;
     margin: 20px 0;
@@ -20,7 +19,8 @@
     background:linear-gradient(to right, #9796f0, #fbc7d4);
 }
 .wrapper{
-    width: 450px;
+    height: 50vh;
+    width: 55vh;
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.12);
@@ -31,7 +31,7 @@
     padding: 25px 30px 10px;
     justify-content: space-between;
 }
-#current-date-month, #current-date-year {
+#current-date-month, #current-date-year{
     visibility : hidden;
 }
 header .icons{
@@ -127,6 +127,7 @@ header .current-date{
     text-align: center;
 }
 .booking-times .booking-schedule{
+    padding: 15px;
     margin-bottom: 20px;
 }
 
@@ -144,14 +145,15 @@ header .current-date{
 .booking-row {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 100px 100px 200px;
+    grid-template-columns: 1fr 1fr 2fr;
     grid-gap: 3px;
     justify-items: center;
     align-items: center;
 }
 .booking-row > a{
+    margin-left: 20px;
     border-radius: 20px;
-    width: 18vh;
+    width: 20vh;
 }
 .booking-row > span {
     background-color: #9796f0;

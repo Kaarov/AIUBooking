@@ -2,6 +2,19 @@ from django.db import models
 from smart_selects.db_fields import ChainedForeignKey
 
 
+class Personal(models.Model):
+    name = models.CharField('Name', max_length=30, unique=True)
+    surname = models.CharField('Surname', max_length=30)
+
+    class Meta:
+        verbose_name = 'Personal'
+        verbose_name_plural = 'Personals'
+        ordering = ['id']
+
+    def __str__(self):
+        return self.name
+
+
 class BookingPole(models.Model):
     name = models.CharField('Name', max_length=50)
     time_6_7 = models.BooleanField('6 : 7', default=True)
@@ -46,10 +59,10 @@ class BookingTime(models.Model):
 
 
 class BookingItem(models.Model):
-    name = models.CharField('Student\'s Name', max_length=30)
     booking_day = models.DateField('Booking Day')
+    name = models.ForeignKey(Personal, on_delete=models.DO_NOTHING, related_name='personals')
     booking_item = models.ForeignKey(BookingPole, on_delete=models.CASCADE, related_name='items')
-    booking_time = models.ManyToManyField(BookingTime, related_name='times')
+    booking_time = models.ForeignKey(BookingTime,  on_delete=models.CASCADE, related_name='times')
 
     class Meta:
         verbose_name = 'BookingItem'
@@ -57,4 +70,4 @@ class BookingItem(models.Model):
         ordering = ['id']
 
     def __str__(self):
-        return self.name
+        return str(self.name)
