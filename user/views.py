@@ -55,7 +55,7 @@ def login_own(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return render(request, 'calendar.html')
+                return render(request, 'login/login.html')
             else:
                 return redirect('error_login')
 
@@ -76,8 +76,8 @@ def login_own(request):
             return redirect('after_register')
     else:
         if request.user.is_authenticated:
-            return render(request, 'base.html')
-    return render(request, 'login.html')
+            return render(request, 'login/login.html')
+    return render(request, 'login/login.html')
 
 
 def after_register(request):
