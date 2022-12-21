@@ -30,13 +30,27 @@ def bookingpost(request):
     return redirect('home')
 
 
+def home(request):
+    field = BookingPole.objects.all()
+    context = {
+        'field': field,
+    }
+    return render(request, 'main.html', context=context)
+
+
 class AjaxHandler(View):
-    def get(self, request):
+    def get(self, request, id):
+        if not request.user.is_authenticated:
+            return redirect('home')
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             time = BookingItem.objects.all()
             bookingpole = BookingPole.objects.all()
             return JsonResponse({'time': time, 'bookingpole': bookingpole})
-        return render(request, 'calendar.html')
+        field = BookingPole.objects.get(id=id)
+        context = {
+            'field': field,
+        }
+        return render(request, 'calendar.html', context=context)
 
 
 class AddBooking(View):
@@ -48,24 +62,6 @@ class AddBooking(View):
             bookingpole = BookingPole.objects.all()
             return JsonResponse({'time': time, 'bookingpole': bookingpole})
         return render(request, 'calendar.html')
-        # order, is_order_created = Order.objects.get_or_create(user=request.user, is_draft=True)
-        # order_item, is_orderitem_created = OrderItem.objects.get_or_create(product_id=product_id, order_id=order.id)
-        #
-        # if is_order_created or is_orderitem_created:
-        #     order_item.amount = 1
-        #     order_item.order = order
-        #     order_item.total_item_price = order_item.product.price
-        #     order.total_price = order.total_price + order_item.total_item_price
-        #     order.total = order.total + order_item.total_item_price + 5
-        # else:
-        #     order_item.amount += 1
-        #     order_item.order = order
-        #     order_item.total_item_price += order_item.product.price
-        #     order.total_price = order.total_price + order_item.product.price
-        #     order.total = order.total + order_item.product.price
-        # order_item.save()
-        # order.save()
-        # return render(request, 'calendar.html')
 
 
 # Rest Api
@@ -197,32 +193,8 @@ class BookingPolePutViewSet(ModelViewSet):
             self.permission_classes = [AllowAny | ReadOnly]
         return super(BookingPolePutViewSet, self).get_permissions()
 
-    # def retrieve(self, request, *args, **kwargs):
-    #     dmy = f"{kwargs.get('id')}"
-    #     print(dmy)
-    #     check = BookingItem.objects.filter(booking_day='2022-12-04')
-    #     if check:
-    #         instance = BookingItem.objects.get(booking_day='2022-12-04')
-    #         serializer = BookingItemSerializer(instance, data=request.data, partial=True)
-    #         serializer.is_valid(raise_exception=True)
-    #     else:
-    #         return Response("error: Not found", status=200)
-    #     return Response(serializer.data)
-
     def list(self, request, *args, **kwargs):
         ymd = f"{kwargs.get('year')}-{kwargs.get('month')}-{kwargs.get('day')}"
         queryset = BookingItem.objects.filter(booking_day=ymd)
         serializer = BookingItemSerializer(queryset, many=True)
         return Response(serializer.data, status=200)
-
-    # def update(self, request, *args, **kwargs):
-    #     ymd = f"{kwargs.get('year')}-{kwargs.get('month')}-{kwargs.get('day')}"
-    #     check = BookingItem.objects.filter(booking_day=ymd)
-    #     if check:
-    #         instance = BookingItem.objects.filter(booking_day=ymd)
-    #         serializer = BookingPolePutViewSetSerializer(instance, data=request.data, partial=True)
-    #         serializer.is_valid(raise_exception=True)
-    #         serializer.save()
-    #     else:
-    #         return Response("error: Not found", status=200)
-    #     return Response(serializer.data, status=200)

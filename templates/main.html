@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <div id="header" class="header1">
+        <div class="header-content">
+            <div class="container">
+                <div class="row">
+                        <div class="text-container">
+                            <h1><span id="js-rotating">Explore<br> your place<br> to enjoy</span></h1>
+                            <!-- <p class="p-heading p-large">Book places to enjoy</p> -->
+                        </div>
+                </div> <!-- end of row -->
+            </div> <!-- end of container -->
+        </div> <!-- end of header-content -->
+    </div> <!-- end of header -->
+    </section>
+    <div class="cattegories">
+        {% for i in field %}
+            <div class="card">
+                <a href="{% url 'calendar' i.id %}">
+                    {% if i.image %}
+                        <img class="card__image" src="{{ i.image.url }}" alt=""/>
+                    {% endif %}
+                    <div class="forbutton">
+                        <p class="link_to">{{ i.name }}</p>
+                    </div>
+                </a>
+            </div>
+    {% endfor %}
+    </div>
+{% endblock %}

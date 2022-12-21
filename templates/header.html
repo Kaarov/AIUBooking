@@ -1,0 +1,14 @@
+{% load static %}
+
+<header class="header-home">
+    <div class="inner-width">
+        <div class="logo">
+            <img src="{% static 'image/alatoo.png' %}" alt="logo">
+            <h1>Booking</h1>
+        </div>
+        <nav class="navigation-menu">
+            <a href="{% url 'login_own' %}" class="ai_btn">Sign in</a>
+            <a href="{% url 'login_own' %}" class="aj_btn">Sign up</a>
+        </nav>
+  </div>
+</header>

@@ -3,6 +3,14 @@
 {% load static %}
 
 {% block content %}
+    <div class="field-image">
+        {% if field.image %}
+            <img src="{{ field.image.url }}" alt="football" />
+        {% endif %}
+    </div>
+    <div class="field-title">
+        <h1>{{ field.name }}</h1>
+    </div>
     <div class="calendar-booking">
         <div class="grid-calendar">
             <div class="wrapper">
@@ -29,41 +37,7 @@
                         <li>Sat</li>
                     </ul>
                     <ul class="days">
-                        <!-- <li class="inactive">27</li>
-                        <li class="inactive">28</li>
-                        <li class="inactive">29</li>
-                        <li class="inactive">30</li>
-                        <li class="">1</li>
-                        <li class="">2</li>
-                        <li class="active">3</li>
-                        <li class="">4</li>
-                        <li class="">5</li>
-                        <li class="">6</li>
-                        <li class="">7</li>
-                        <li class="">8</li>
-                        <li class="">9</li>
-                        <li class="">10</li>
-                        <li class="">11</li>
-                        <li class="">12</li>
-                        <li class="">13</li>
-                        <li class="">14</li>
-                        <li class="">15</li>
-                        <li class="">16</li>
-                        <li class="">17</li>
-                        <li class="">18</li>
-                        <li class="">19</li>
-                        <li class="">20</li>
-                        <li class="">21</li>
-                        <li class="">22</li>
-                        <li class="">23</li>
-                        <li class="">24</li>
-                        <li class="">25</li>
-                        <li class="">26</li>
-                        <li class="">27</li>
-                        <li class="">28</li>
-                        <li class="">29</li>
-                        <li class="">30</li>
-                        <li class="">31</li> -->
+
                     </ul>
                 </div>
             </div>
@@ -71,19 +45,7 @@
                 <div class="booking-times">
                     <p class="message" id="message"></p>
                     <ul class="booking-schedule" id="booking-schedule">
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="disable">disable</a></li>#}
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="disable">disable</a></li>#}
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="able">able</a></li>#}
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="able">able</a></li>#}
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="able">able</a></li>#}
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="disable">disable</a></li>#}
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="disable">disable</a></li>#}
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="booked">booked</a></li>#}
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="booked">booked</a></li>#}
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="booked">booked</a></li>#}
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="booked-own">booked-own</a></li>#}
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="booked-own">booked-own</a></li>#}
-                        {#                        <li class="booking-row"><span>9 : 00</span><span>10 : 00</span><a class="booked-own">booked-own</a></li>#}
+
                     </ul>
                 </div>
             </div>

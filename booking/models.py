@@ -21,6 +21,7 @@ from user.models import User
 
 class BookingPole(models.Model):
     name = models.CharField('Name', max_length=50)
+    image = models.ImageField(verbose_name='Image', upload_to='Field/')
     time_6_7 = models.BooleanField('6 : 7', default=True)
     time_7_8 = models.BooleanField('7 : 8', default=True)
     time_8_9 = models.BooleanField('8 : 9', default=True)

@@ -3,9 +3,10 @@ from django.urls import path, include
 from booking.views import *
 
 urlpatterns = [
+    path('', home, name='home'),
 
     # Ajax API
-    path('', AjaxHandler.as_view(), name="home"),
+    path('calendar/<int:id>/', AjaxHandler.as_view(), name="calendar"),
 
     # Booking API
     path('bookingitem/', BookingItemViewSet.as_view({'get': 'list', 'post': 'create'})),

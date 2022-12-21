@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500&display=swap');
+html,body{
+  position: relative;
+}
+*{
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+.header-home{
+  height: 68px;
+  background-color: #0c1d2c;
+
+}
+.inner-width{
+  max-width: 100%;
+  padding: 0 10px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    min-height: 68px;
+}
+.logo img{
+  
+  margin-left: 15px;
+  height: 50px;
+  align-items: center;
+}
+.logo h1{
+    font-family:'Courier New', Courier, monospace;
+    color:#fff;
+    margin-left: 3px;
+}
+.navigation-menu{
+  float: right;
+  display: flex;
+  align-items: center;
+  min-height: 68px;
+}
+
+.navigation-menu a{
+  margin-left: 10px;
+  color:#273b91;
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  transition: .3s linear;
+}
+
+.navigation-menu a:hover{
+  background: #276a91;
+  color: #fff;
+  transform: scale(1.1);
+}
+.home{
+  color: #fff;
+}
+a.ai_btn {
+    background:#fff;
+    color: #0a94ef;
+    font-weight: 500;
+    letter-spacing: 2px;
+  }
+  
+a.ai_btn:hover{
+    background: #0a94ef;
+    color: #fff;
+    font-weight: 500;
+    letter-spacing: 2px;
+  }
+a.aj_btn {
+  background: #0a94ef;
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+a.aj_btn:hover{
+  background: rgb(255, 255, 255);
+  color: #273b91;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+#header {
+	background:url('/static/image/cloud 1.png') center bottom/cover no-repeat;;
+}
+
+.header1 .header-content {
+	padding-top: 8rem;
+	padding-bottom: 2.125rem;
+	text-align: center;
+}
+
+.header1 .text-container {
+	  margin-bottom: 3rem;
+    margin-left: 5rem;
+    display:flex;
+    max-width: 40%;
+    justify-content: flex-start;
+    flex-flow: flex-start wrap;
+}
+.header1 h1 span {
+    align-items: center;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    color: rgb(26, 24, 27);
+    flex-flow: row wrap;
+    font-size:70px;
+}
+  
+  .cattegories{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+.cattegories {
+    margin: 0 auto;
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    grid-auto-rows: auto;
+    gap: 30px;
+    font-family: sans-serif;
+    padding-top: 30px;
+    align-items: space-between;
+    margin-bottom: 0px;
+}
+.cattegories * {
+  box-sizing: border-box;
+}
+.card{
+  margin: 20px 20px;
+}
+
+.card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 100px;
+}
+.card__image:hover{
+  transform: scale(0.9);
+  transition: .3s linear;
+  letter-spacing: 2px;
+}
+.forbutton{
+  font-family:"Avenir";
+  display: flex;
+  justify-content: center;
+  color: #64968c;
+  text-decoration: none;
+  margin: auto auto;
+}
+.link_to{
+  font-size: 40px;
+  color: #000;
+}
+
+.forbutton:hover {
+  text-decoration:none;
+}
+footer {
+  bottom: 0;
+  background-color: #273b91;
+  height: 100px;
+  left: 0;
+  position: relative;
+  width:100%;
+  margin-top: 60px;
+}
+.icons{
+  justify-content: center;
+}
+
+
+.socials{
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0 3rem 0;
+}
+.socials li{
+  margin: 0 10px;
+}
+.socials a{
+  text-decoration: none;
+  color: #fff;
+  padding: 5px;
+  border-radius: 50%;
+}
+.socials a i{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  width: 20px;
+  transition: color .4s ease;
+}
+.socials a:hover i{
+  color: aqua;
+}
+.clear {
+  clear:both;
+}
+@media screen and (max-width: 600px){
+
+  .logo img{
+    height: 30px;
+  }
+  .logo h1{
+    font-size: 20px;
+  }
+  .navigation-menu{
+    min-height: 30px;
+  }
+  .navigation-menu a{
+    margin-left: 10px;
+    text-transform: uppercase;
+    font-size: 7px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    transition: .3s linear;
+  }
+  #header {
+    background:url('/static/image/rsz_1cloud_1.png') center bottom/cover no-repeat;
+    width: 100%;
+  }
+  .header1 h1 span {
+    color: rgb(26, 24, 27);
+    flex-flow: row wrap;
+    font-size:35px;
+
+  }
+    .cattegories {
+      grid-template-columns: repeat(1, minmax(150px, 1fr));
+  }
+  .card__image {
+    width: 100%;
+    position: relative;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 80px;
+  }
+  .link_to{
+    font-size: 30px;
+  }
+  footer{
+    margin-top: 30px;
+  }
+}
+
