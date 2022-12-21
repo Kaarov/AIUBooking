@@ -12,26 +12,6 @@ from booking.models import Xxxxx
 from django.contrib import messages
 
 
-# def contact(request):
-#     if not request.user.is_authenticated:
-#         return redirect('home')
-#     if request.method == 'POST':
-#         username = request.POST['name']
-#         email = request.POST['email']
-#         subject = request.POST['subject']
-#         message = request.POST['message']
-#         send_mail(
-#                 subject=subject,
-#                 message=f'{message}\n'
-#                         f''
-#                         f'From {username}: email {email}',
-#                 from_email=settings.EMAIL_HOST_USER,
-#                 recipient_list=['anasbinkurban@gmail.com']
-#             )
-#         return redirect('contact')
-#     return render(request, 'user/contact.html')
-
-
 def logout_own(request):
     return redirect('logout_own')
 
@@ -53,11 +33,9 @@ def login_own(request):
             if validate(email):
                 user = authenticate(request, username=username, email=email, password=password)
                 # user = Personal.objects.filter(email=email)
-                print(user)
                 if user is not None:
-                    print("passed")
                     auth.login(request, user)
-                    return redirect('home')
+                    return redirect('calendar')
                 messages.error(request, 'Email or password are wrong!')
             else:
                 messages.error(request, 'Email is wrong!')
@@ -83,24 +61,4 @@ def login_own(request):
             else:
                 messages.warning(request, 'The email should be @alatoo.edu.kg!')
         return redirect('login_own')
-    # else:
-    #     if request.user.is_authenticated:
-    #         return render(request, 'login/login.html')
     return render(request, 'login/login.html')
-
-
-# def after_register(request):
-#     if request.method == 'POST':
-#         if 'login' in request.POST:
-#             username = request.POST['name']
-#             password = request.POST['password']
-#             user = authenticate(request, username=username, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 return render(request, 'base.html')
-#             else:
-#                 return redirect('error_login')
-#     else:
-#         if request.user.is_authenticated:
-#             return render(request, 'base.html')
-#     return render(request, 'after_register.html')

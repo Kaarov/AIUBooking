@@ -30,27 +30,23 @@ def bookingpost(request):
     return redirect('home')
 
 
+class AjaxHandler(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login_own')
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            time = BookingItem.objects.all()
+            bookingpole = BookingPole.objects.all()
+            return JsonResponse({'time': time, 'bookingpole': bookingpole})
+        return render(request, 'calendar.html')
+
+
 def home(request):
     field = BookingPole.objects.all()
     context = {
         'field': field,
     }
     return render(request, 'main.html', context=context)
-
-
-class AjaxHandler(View):
-    def get(self, request, id):
-        if not request.user.is_authenticated:
-            return redirect('home')
-        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-            time = BookingItem.objects.all()
-            bookingpole = BookingPole.objects.all()
-            return JsonResponse({'time': time, 'bookingpole': bookingpole})
-        field = BookingPole.objects.get(id=id)
-        context = {
-            'field': field,
-        }
-        return render(request, 'calendar.html', context=context)
 
 
 class AddBooking(View):
