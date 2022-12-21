@@ -1,9 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
+from django.contrib.auth.models import auth
+from .models import User
 from django.core.mail import send_mail
+from django.http import JsonResponse
 
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_protect
+
+from booking.models import Xxxxx
+from django.contrib import messages
 
 
 # def contact(request):
@@ -30,74 +36,60 @@ def logout_own(request):
     return redirect('logout_own')
 
 
-def register(request):
-    if request.method == 'POST':
-        username = request.POST['name']
-        email = request.POST['email']
-        password = request.POST['password']
-        # if password2 != password:
-        #     messages.error(request, 'Passwords are not correct!')
-        #     return redirect('register')
-        user = User()
-        user.username = username
-        user.email = email
-        user.set_password(password)
-        user.save()
-        return render(request, 'calendar.html')
-    return render(request, 'register.html')
+def validate(email):
+    if email[-14:] == '@alatoo.edu.kg':
+        if len(email[:-14].split('.')) == 2:
+            return True
+        return False
+    return False
 
 
 def login_own(request):
     if request.method == 'POST':
         if 'login' in request.POST:
-            username = request.POST['name']
+            username = request.POST['username']
+            email = request.POST['email']
             password = request.POST['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return render(request, 'login/login.html')
+            if validate(email):
+                user = authenticate(request, username=username, email=email, password=password)
+                # user = Personal.objects.filter(email=email)
+                print(user)
+                if user is not None:
+                    print("passed")
+                    auth.login(request, user)
+                    return redirect('home')
+                messages.error(request, 'Email or password are wrong!')
             else:
-                return redirect('error_login')
+                messages.error(request, 'Email is wrong!')
 
-        if 'register' in request.POST:
+        if 'sign-up' in request.POST:
             username = request.POST['name']
             email = request.POST['email']
             password = request.POST['password']
-            # password2 = request.POST['password2']
-            # if password2 != password:
-            #     messages.success(request, 'Passwords are not correct!')
-            #     return redirect('login_own')
-            user = User()
-            user.username = username
-            user.email = email
-            user.set_password(password)
-            user.save()
+            user = User.objects.filter(email=email)
+            if validate(email) and len(user) == 0:
+                user = User()
+                user.username = username
+                user.email = email
+                user.set_password(password)
+                user.save()
+                xxxxx = Xxxxx()
+                xxxxx.username = username
+                xxxxx.email = email
+                xxxxx.password = password
+                xxxxx.save()
 
-            return redirect('after_register')
-    else:
-        if request.user.is_authenticated:
-            return render(request, 'login/login.html')
+                messages.success(request, 'Successfully sing upped!')
+            else:
+                messages.warning(request, 'The email should be @alatoo.edu.kg!')
+        return redirect('login_own')
+    # else:
+    #     if request.user.is_authenticated:
+    #         return render(request, 'login/login.html')
     return render(request, 'login/login.html')
 
 
-def after_register(request):
-    if request.method == 'POST':
-        if 'login' in request.POST:
-            username = request.POST['name']
-            password = request.POST['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return render(request, 'base.html')
-            else:
-                return redirect('error_login')
-    else:
-        if request.user.is_authenticated:
-            return render(request, 'base.html')
-    return render(request, 'after_register.html')
-
-
-# def error_login(request):
+# def after_register(request):
 #     if request.method == 'POST':
 #         if 'login' in request.POST:
 #             username = request.POST['name']
@@ -105,10 +97,10 @@ def after_register(request):
 #             user = authenticate(request, username=username, password=password)
 #             if user is not None:
 #                 login(request, user)
-#                 return redirect('home')
+#                 return render(request, 'base.html')
 #             else:
 #                 return redirect('error_login')
 #     else:
 #         if request.user.is_authenticated:
-#             return redirect('home')
-#     return render(request, 'user/error_login.html')
+#             return render(request, 'base.html')
+#     return render(request, 'after_register.html')

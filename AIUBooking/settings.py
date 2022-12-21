@@ -98,7 +98,7 @@ DATABASES = {
     }
 }
 
-
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -161,4 +161,4 @@ REST_FRAMEWORK = {
     ]
 }
 #
-# AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = 'user.User'

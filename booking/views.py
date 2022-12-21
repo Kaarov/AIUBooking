@@ -40,7 +40,7 @@ class AjaxHandler(View):
 
 
 class AddBooking(View):
-    def post(self, request, ):
+    def post(self, request):
         if not request.user.is_authenticated:
             return render(request, 'calendar.html')
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':

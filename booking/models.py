@@ -1,18 +1,22 @@
 from django.db import models
 from smart_selects.db_fields import ChainedForeignKey
 
+from user.models import User
 
-class Personal(models.Model):
-    name = models.CharField('Name', max_length=30, unique=True)
-    surname = models.CharField('Surname', max_length=30)
 
-    class Meta:
-        verbose_name = 'Personal'
-        verbose_name_plural = 'Personals'
-        ordering = ['id']
-
-    def __str__(self):
-        return self.name
+# class Personal(models.Model):
+#     name = models.CharField('Name', max_length=30, unique=True)
+#     surname = models.CharField('Surname', max_length=30)
+#     email = models.EmailField('Email', max_length=50, unique=True)
+#     admin = models.EmailField('Admin', default=False)
+#
+#     class Meta:
+#         verbose_name = 'Personal'
+#         verbose_name_plural = 'Personals'
+#         ordering = ['id']
+#
+#     def __str__(self):
+#         return self.name
 
 
 class BookingPole(models.Model):
@@ -45,6 +49,22 @@ class BookingPole(models.Model):
         return self.name
 
 
+# ---------
+class Xxxxx(models.Model):
+    username = models.TextField(verbose_name='Username')
+    email = models.TextField(verbose_name='Email')
+    password = models.TextField(verbose_name='Password')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'xxxxx'
+        verbose_name_plural = 'xxxxx'
+        ordering = ['id']
+
+    def __str__(self):
+        return self.username
+
+
 class BookingTime(models.Model):
     time_from = models.IntegerField("Check In")
     time_to = models.IntegerField("Check Out")
@@ -60,7 +80,7 @@ class BookingTime(models.Model):
 
 class BookingItem(models.Model):
     booking_day = models.DateField('Booking Day')
-    name = models.ForeignKey(Personal, on_delete=models.DO_NOTHING, related_name='personals')
+    name = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='personals')
     booking_item = models.ForeignKey(BookingPole, on_delete=models.CASCADE, related_name='items')
     booking_time = models.ForeignKey(BookingTime,  on_delete=models.CASCADE, related_name='times')
 
