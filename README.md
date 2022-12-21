@@ -11,9 +11,9 @@ We did all app about University and there is logo of University
 
 --------
 # The main part in every projects are Log In and Register
-Log In:
+## Log In:
 <img width="631" alt="Screenshot 2022-12-22 at 12 05 12 AM" src="https://user-images.githubusercontent.com/99861500/208976087-23e3a2ba-fcfa-4f06-bbd0-9ff51ab4690a.png">
-Register:
+## Register:
 <img width="631" alt="Screenshot 2022-12-22 at 12 05 19 AM" src="https://user-images.githubusercontent.com/99861500/208976157-e38cacad-5eed-41bb-a537-725d51072aca.png">
 # There are also some errors (validate)
 <img width="631" alt="Screenshot 2022-12-22 at 12 06 26 AM" src="https://user-images.githubusercontent.com/99861500/208976292-c13bbb30-b079-4acc-9c7f-b25a64fb2933.png">
