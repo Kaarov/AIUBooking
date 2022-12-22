@@ -452,8 +452,6 @@ daysli.forEach(li => {
                 a.innerHTML = newLiTag
             }
         }
-
-
         aTag.forEach(a => {
             a.children[2].addEventListener("click", async () => {
                 aclicked(a);
@@ -462,7 +460,6 @@ daysli.forEach(li => {
 
     })
 })
-
 function call(liTag, list_booking_time_user, list_booking_time, bookingpoleapi) {
     for (let i = 0; i < 18; i++) {
         if (list_booking_time_user) {
