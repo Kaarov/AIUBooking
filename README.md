@@ -3,6 +3,8 @@
 # Murat Myrzataev COM21B
 # Anas Kaarov COM21B
 [DEPLOYED LINK](http://aiubookingtest.anaskaarov.repl.co/) -> [http://aiubookingtest.anaskaarov.repl.co/](http://aiubookingtest.anaskaarov.repl.co/)
+YouTube link -> [https://youtu.be/nhzpTw8YHOY](https://youtu.be/nhzpTw8YHOY)
+
 
 
 The project was about university, to play football or organize some event
